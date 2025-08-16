@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* AptEase premium theme additions */
+:root{ --brand-start:#0ea5e9; --brand-end:#8b5cf6; --card-bg: 255 255 255; }
+* { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+@keyframes levitate { 0%{transform:translateY(0)} 50%{transform:translateY(-2px)} 100%{transform:translateY(0)} }
+.animate-levitate { animation: levitate 3s ease-in-out infinite; }
+.shadow-soft { box-shadow: 0 10px 25px rgba(2,6,23,0.06); }
+.gradient-brand { background-image: linear-gradient(90deg, var(--brand-start), var(--brand-end)); }
+.btn-gradient { background-image: linear-gradient(90deg, #14b8a6, #8b5cf6); color:white; }
+.badge { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+.badge.green { background:#dcfce7; color:#166534; }
+.badge.red { background:#fee2e2; color:#991b1b; }
+.badge.amber { background:#fef3c7; color:#92400e; }
+.badge.blue { background:#dbeafe; color:#1e3a8a; }
+.card { background: rgba(var(--card-bg)/1); border-radius: 1rem; padding: 1rem; }
