@@ -4,9 +4,9 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
 // ✅ REQUIRE ROUTES (module.exports = router in files)
-const flatsRoutes = require('./routes/flats');
-const maintenanceRoutes = require('./routes/maintenance');
-const authRoutes = require('./routes/auth');
+const flatsRoutes = require('./routes/flatsRoutes');
+const maintenanceRoutes = require('./routes/maintenanceRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 connectDB();
