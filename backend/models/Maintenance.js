@@ -5,6 +5,6 @@ const maintenanceSchema = new mongoose.Schema({
   description: String,
   priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Low' },
   status: { type: String, enum: ['Pending', 'In Progress', 'Completed'], default: 'Pending' }
-});
+}, { timestamps: true });
 
 export default mongoose.model('Maintenance', maintenanceSchema);

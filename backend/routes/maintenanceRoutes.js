@@ -9,4 +9,3 @@ router.put('/:id', updateRequest);
 router.delete('/:id', deleteRequest);
 
 export default router;
-module.exports = router;
