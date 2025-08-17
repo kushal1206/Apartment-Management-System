@@ -8,3 +8,4 @@ router.put('/:id', updateFlat);
 router.delete('/:id', deleteFlat);
 
 module.exports = router;
+export default router;
