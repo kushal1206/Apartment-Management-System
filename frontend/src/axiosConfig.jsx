@@ -1,16 +1,14 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE || "http://localhost:5001/api",
+const api = axios.create({
+  baseURL: "http://localhost:5001",   // your backend API
 });
 
-// Add token if logged in
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+// Interceptor to log outgoing requests
+api.interceptors.request.use((config) => {
+  const url = (config.baseURL || "") + (config.url || "");
+  console.log("[API]", (config.method || "GET").toUpperCase(), url);
   return config;
 });
 
-export default axiosInstance;
+export default api;
