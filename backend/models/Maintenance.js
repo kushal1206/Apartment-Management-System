@@ -7,4 +7,5 @@ const maintenanceSchema = new mongoose.Schema({
   status: { type: String, enum: ['Pending', 'In Progress', 'Completed'], default: 'Pending' }
 }, { timestamps: true });
 
+const Maintenance = mongoose.models.Maintenance || mongoose.model("Maintenance", maintenanceSchema);
 export default mongoose.model('Maintenance', maintenanceSchema);

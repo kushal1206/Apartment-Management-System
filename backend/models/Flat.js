@@ -7,4 +7,5 @@ const flatSchema = new mongoose.Schema({
   occupied: { type: Boolean, default: false }
 });
 
+const Flat = mongoose.models.Flat || mongoose.model("Flat", flatSchema);
 export default mongoose.model('Flat', flatSchema);

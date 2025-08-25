@@ -12,18 +12,18 @@ await connectDB();
 
 const app = express();
 app.use(cors({
-  origin: [
-    'http://localhost:3000', 'http://127.0.0.1:3000',
-    'http://localhost:3001', 'http://127.0.0.1:3001'
-  ],
+  origin:
+    'http://localhost:3000' , credential: true,
+  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
 }));
 app.use(express.json());
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-app.use('/api/flats', flatsRoutes);
-app.use('/api/maintenance', maintenanceRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/flats', flatsRoutes);
+app.use('/maintenance', maintenanceRoutes);
+app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, '0.0.0.0', () => {

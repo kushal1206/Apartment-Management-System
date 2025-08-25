@@ -1,39 +1,63 @@
-// backend/test/flat.controller.test.js
-const chai = require('chai');
-const sinon = require('sinon');
-const mongoose = require('mongoose');
-const { expect } = chai;
+import { expect } from "chai";
+import mongoose from "mongoose";
+import Flat from "../models/Flat.js";
 
-const Flat = require('../models/Flat');
-const flatsController = require('../controllers/flatsController'); // { createFlat, getFlats, ... }
+describe("Flat model - CRUD with real DB", function () {
+  this.timeout(20000); // extend timeout for DB ops
 
-describe('Flats Controller - createFlat', () => {
-  afterEach(() => sinon.restore());
-
-  it('should create a flat successfully', async () => {
-    const req = {
-      body: { number: 'B-204', floor: 2, owner: 'Alex', bedrooms: 2 }
-    };
-    const created = { _id: new mongoose.Types.ObjectId(), ...req.body };
-
-    const stub = sinon.stub(Flat, 'create').resolves(created);
-
-    const res = { status: sinon.stub().returnsThis(), json: sinon.spy() };
-    await flatsController.createFlat(req, res);
-
-    expect(stub.calledOnceWith(req.body)).to.be.true;
-    expect(res.status.calledWith(201)).to.be.true;
-    expect(res.json.calledWith(created)).to.be.true;
+  before(async () => {
+    // Replace with your actual MongoDB connection string
+    const uri = "mongodb+srv://parmarkushal642:kushal1206@cluster0.entef2q.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"; 
+    await mongoose.connect(uri, { 
+      useNewUrlParser: true, 
+      useUnifiedTopology: true 
+    });
   });
 
-  it('should return 500 on DB error', async () => {
-    sinon.stub(Flat, 'create').throws(new Error('DB Error'));
-    const req = { body: { number: 'B-204', floor: 2, owner: 'Alex', bedrooms: 2 } };
-    const res = { status: sinon.stub().returnsThis(), json: sinon.spy() };
+  after(async () => {
+    await mongoose.connection.dropDatabase(); // clean up test DB
+    await mongoose.disconnect();
+  });
 
-    await flatsController.createFlat(req, res);
+  beforeEach(async () => {
+    await Flat.deleteMany({});
+  });
 
-    expect(res.status.calledWith(500)).to.be.true;
-    expect(res.json.calledWithMatch({ message: 'DB Error' })).to.be.true;
+  it("creates a flat", async () => {
+    const doc = await Flat.create({
+      number: "A-101",
+      size: "85 sqm",
+      floor: 1,
+      occupied: false
+    });
+
+    expect(doc).to.have.property("_id");
+    expect(doc.number).to.equal("A-101");
+  });
+
+  it("reads flats", async () => {
+    await Flat.insertMany([
+      { number: "B-204", size: "90 sqm", floor: 2, occupied: true },
+      { number: "C-305", size: "76 sqm", floor: 3, occupied: false }
+    ]);
+    const list = await Flat.find();
+    expect(list).to.have.length(2);
+  });
+
+  it("updates a flat", async () => {
+    const created = await Flat.create({ number: "D-406", size: "88 sqm", floor: 4 });
+    const updated = await Flat.findByIdAndUpdate(
+      created._id,
+      { occupied: true },
+      { new: true }
+    );
+    expect(updated.occupied).to.equal(true);
+  });
+
+  it("deletes a flat", async () => {
+    const created = await Flat.create({ number: "E-507", size: "92 sqm", floor: 5 });
+    await Flat.findByIdAndDelete(created._id);
+    const count = await Flat.countDocuments();
+    expect(count).to.equal(0);
   });
 });
