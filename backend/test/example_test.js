@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import Flat from "../models/Flat.js";
 
 describe("Flat model - CRUD with real DB", function () {
-  this.timeout(20000); // extend timeout for DB ops
+  this.timeout(60000); // extend timeout for DB ops
 
   before(async () => {
     // Replace with your actual MongoDB connection string
