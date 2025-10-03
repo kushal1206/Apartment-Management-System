@@ -2,13 +2,14 @@ name: Backend/Frontend CI
 
 on:
   push:
-    branches: [ "main" ]  # trigger on push to main (as per reference)
+    branches: ["main"] # trigger on push to main (as per reference)
   pull_request:
-    branches: [ "main", "features" ]  # also run on PRs
+    branches: ["main", "features"] # also run on PRs
 
 jobs:
   test-and-build:
-    # Reference uses self-hosted; keep that. If you don't have it yet, switch to ubuntu-latest temporarily.
+    # Reference uses self-hosted; keep that. If you don't have it yet, switch to ubuntu-latest temporarily. please check
+
     runs-on: self-hosted
     strategy:
       matrix:
