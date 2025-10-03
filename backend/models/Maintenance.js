@@ -1,11 +1,35 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { invalidatePrefix } from "../middleware/cache.js";
+const maintenanceSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    description: { type: String, default: "" },
+    priority: {
+      type: String,
+      enum: ["Low", "Medium", "High"],
+      default: "Low",
+      index: true,
+    },
+    status: {
+      type: String,
+      enum: ["Pending", "In Progress", "Completed"],
+      default: "Pending",
+      index: true,
+    },
+  },
+  { timestamps: true }
+);
 
-const maintenanceSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: String,
-  priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Low' },
-  status: { type: String, enum: ['Pending', 'In Progress', 'Completed'], default: 'Pending' }
-}, { timestamps: true });
+maintenanceSchema.pre("findOneAndUpdate", function (next) {
+  this.set({ updatedAt: new Date() });
+  next();
+});
 
-const Maintenance = mongoose.models.Maintenance || mongoose.model("Maintenance", maintenanceSchema);
-export default mongoose.model('Maintenance', maintenanceSchema);
+export default mongoose.models.Maintenance ||
+  mongoose.model("Maintenance", maintenanceSchema);
+
+const bust = () => invalidatePrefix("maint:list:");
+maintenanceSchema.post("save", bust);
+maintenanceSchema.post("findOneAndUpdate", bust);
+maintenanceSchema.post("findOneAndDelete", bust);
+maintenanceSchema.post("deleteOne", bust);
