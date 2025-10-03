@@ -8,8 +8,7 @@ on:
 
 jobs:
   test-and-build:
-    # Reference uses self-hosted; keep that. If you don't have it yet, switch to ubuntu-latest temporarily. please check
-
+    # Reference uses self-hosted; keep that. If you don't have it yet, switch to ubuntu-latest temporarily.
     runs-on: self-hosted
     strategy:
       matrix:

@@ -5,11 +5,12 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha --timeout 60000",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "prod": "node server.js",
-    "test:cov": "nyc npm test"
+    "prod": "node server.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
